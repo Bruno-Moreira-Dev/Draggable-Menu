@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draggable Action Menu UI Design</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg==" crossorigin="anonymous" />
+</head>
+<body>
+    <div class="navigation" id="mydiv">
+        <div class="toggle" id="mydivheader"></div>
+        <ul>
+            <li>
+                <a href="#">
+                    <span class="icon">
+                        <i class="fa fa-home"></i>
+                    </span>
+                    <span class="title">Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="icon">
+                        <i class="fa fa-user"></i>
+                    </span>
+                    <span class="title">Profile</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="icon">
+                        <i class="fa fa-comment"></i>
+                    </span>
+                    <span class="title">Messages</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="icon">
+                        <i class="fa fa-cog"></i>
+                    </span>
+                    <span class="title">Settings</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="icon">
+                        <i class="fa fa-lock"></i>
+                    </span>
+                    <span class="title">Password</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <span class="icon">
+                        <i class="fa fa-sign-out"></i>
+                    </span>
+                    <span class="title">Sign Out</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const navigation = document.querySelector('.navigation');
+        document.querySelector('.toggle').onclick = function() {
+            this.classList.toggle('active');
+            navigation.classList.toggle('active');
+        }
+
+        // Make the DIV draggable:
+        dragElement(document.getElementById("mydiv"));
+
+        function dragElement(elmt) {
+            var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            if (document.getElementById(elmt.id + "header")) {
+                document.getElementById(elmt.id + "header").onmousedown = dragMouseDown;
+            } else {
+                elmt.onmousedown = dragMouseDown;
+            }
+
+            function dragMouseDown(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // get the mouse cursor position at startup:
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                document.onmouseup = closeDragElement;
+                // call a function whenever the cursor moves:
+                document.onmousemove = elementDrag;       
+            }
+
+            function elementDrag(e) {
+                e = e || window.event;
+                e.preventDefault();
+                // calculate the new cursor position:
+                pos1 = pos3 - e.clientX;
+                pos2 = pos4 - e.clientY;
+                pos3 = e.clientX;
+                pos4 = e.clientY;
+                // set the element's new position:
+                elmt.style.top = (elmt.offsetTop - pos2) + "px";
+                elmt.style.left = (elmt.offsetLeft - pos1) + "px";
+            }
+
+            function closeDragElement() {
+                //stop moving when mouse button is released:
+                document.onmouseup = null;
+                document.onmousemove = null;
+            }
+        }
+    </script>
+</body>
+</html>
